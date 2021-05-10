@@ -4,4 +4,5 @@ The back-end already features pagination and sorting of the product array based 
 The front is made with react.js, react-router, react-query, and styled components. 
 
 In the next months i will be adding to the front: pagination, finishing the coin detail page, creating a home and options for sorting the coin list.
+
 In the Back i will be adding correct error-handling.
