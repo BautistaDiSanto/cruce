@@ -1,6 +1,15 @@
 const Product = require("./Product");
 const sequelize = require("../database/sequelize");
 
+const queryBuilder = (rawQuery, params) => {
+  const newObj = {};
+  params.map((p) => {
+    if (rawQuery[p]) newObj[p] = rawQuery[p];
+    return 0; // justo for the linter :P
+  });
+  return newObj;
+};
+
 const validateProduct = (body) => {
   if (!body.image) throw new Error("image property missing");
   if (!body.name) throw new Error("name property missing");
@@ -31,7 +40,13 @@ class ProductService {
     }
   }
   async getAllProducts(limits, page, orderColumn, direction) {
-    const order = orderColumn && [[orderColumn, direction]];
+    let order = orderColumn && [[orderColumn, direction]];
+    if (direction !== "ASC" && direction !== "DESC" && direction !== "") {
+      throw new Error(400, "bad request");
+    }
+    if (!orderColumn || !direction) {
+      order = null;
+    }
     try {
       const { count, rows } = await Product.findAndCountAll({
         offset: (parseInt(page) - 1) * limits,
@@ -44,6 +59,7 @@ class ProductService {
       throw new Error(error.message);
     }
   }
+
   async deleteProduct(id) {
     try {
       const product = await Product.findByPk(id);
