@@ -2,13 +2,11 @@ import { useQuery } from "react-query";
 
 const baseUrl = "http://localhost:3001";
 
-const page = 1;
-
 const limits = 9;
 
-export const GetProducts = (sort) => {
-  let url = `${baseUrl}/products/?limits=${limits}&page=${page}`;
-  return useQuery("products", async () => {
+export const GetProducts = (sort, pagination) => {
+  let url = `${baseUrl}/products/?orderColumn=price&direction=${sort}&limits=${limits}&page=${pagination}`;
+  return useQuery([sort, pagination], async () => {
     const res = await fetch(url);
     return res.json();
   });
@@ -33,7 +31,7 @@ export const EditProduct = (id) => {
 export const DeleteProduct = (id) => {
   const url = `${baseUrl}/products/${id}`;
   return useQuery("product", async () => {
-    const res = fetch(url);
+    const res = fetch(url, { method: "DELETE" });
     return res.json();
   });
 };

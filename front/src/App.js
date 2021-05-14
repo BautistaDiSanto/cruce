@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import { ProductListPage } from "./Pages/ProductList";
+import { ProductListPage } from "./Pages/ProductListPage";
+import { Footer } from "./components/footer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,6 +21,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={ProductListPage} />
           </Switch>
+          <Footer />
         </Router>
       </ChakraProvider>
     </QueryClientProvider>

@@ -10,9 +10,11 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Spinner,
 } from "@chakra-ui/react";
 
-const OrderBy = ({ sortOptions, setLabel, label, setSort, sorting, sort }) => {
+const OrderBy = ({ sortOptions, setLabel, label, setSort }) => {
+  //hacer custom drop-down-menu
   return (
     <Menu matchWidth>
       <Button as={Button}>
@@ -56,18 +58,30 @@ const FilterMenu = () => {
   );
 };
 
-export const ProductList = () => {
+export const ProductList = ({ actualPage, setTotalPages }) => {
   const sortOptions = [
-    { label: "Default", value: "NULL" },
+    { label: "Default", value: "" },
     { label: "Mayor", value: "DESC" },
     { label: "Menor", value: "ASC" },
   ];
   const [label, setLabel] = React.useState("Ordenar por");
-  const [sort, setSort] = React.useState("FIRST");
-  const { data, status } = GetProducts(sort);
-  console.log({ data, status });
+  const [sort, setSort] = React.useState("");
+  const { data, status } = GetProducts(sort, actualPage);
   console.log(sort);
-  if (status === "loading") return <>loading</>;
+  console.log({ data, status });
+  if (status === "loading")
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Spinner size="xl" color="red" />
+      </div>
+    );
   if (status === "error")
     return (
       <div
@@ -82,6 +96,7 @@ export const ProductList = () => {
         <p style={{ fontSize: "3rem", fontWeight: "900" }}>error</p>
       </div>
     );
+  setTotalPages(data.pages);
   return (
     <>
       <Header>
@@ -99,7 +114,6 @@ export const ProductList = () => {
             setLabel={setLabel}
             label={label}
             setSort={setSort}
-            data={sort}
           />
         </Filters>
         <Banner src="../../../banner.svg" />
