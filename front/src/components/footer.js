@@ -23,6 +23,7 @@ const FooterWrap = styled.div`
   background-color: #ededed;
   border-top: 1px solid #e7e7e7;
   width: 100%;
+  min-width: 320px;
   height: fit-content;
   display: flex;
   flex-direction: column;
