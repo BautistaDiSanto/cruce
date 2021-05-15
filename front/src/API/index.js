@@ -4,9 +4,9 @@ const baseUrl = "http://localhost:3001";
 
 const limits = 9;
 
-export const GetProducts = (sort, pagination) => {
-  let url = `${baseUrl}/products/?orderColumn=price&direction=${sort}&limits=${limits}&page=${pagination}`;
-  return useQuery([sort, pagination], async () => {
+export const GetProducts = (sort, actualPage) => {
+  let url = `${baseUrl}/products/?orderColumn=price&direction=${sort}&limits=${limits}&page=${actualPage}`;
+  return useQuery([sort, actualPage], async () => {
     const res = await fetch(url);
     return res.json();
   });
